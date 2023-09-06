@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .container{
+            width: 100%;
+            min-height: 100vh;
+            background-color: rgb(170, 229, 128);
+            padding:10px;   
+        }
+        .todo-app{
+            width: 700px;
+            background-color: rgb(98, 243, 212);
+            margin: 100px auto 20px;
+            padding: 40px 30px 70px;
+            border-radius: 20px;
+            border: 1px solid black;
+        }
+        .row{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid black;
+            background-color: rgb(174, 240, 240);
+            border-radius: 30px;
+            padding-left: 20px;
+            margin-bottom: 25px;
+        }
+        input{
+            flex: 1;
+            border:none;
+            outline: none;
+            background: transparent;
+            padding: 10px;
+            font-size: 14px;
+        }
+        button{
+            border: none;
+            outline: none;
+            padding: 16px 50px;
+            background:rebeccapurple;
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 30px;
+        }
+        ul li{
+            
+            list-style: none;
+            font-size: 18px;
+            padding: 12px 8px 2px 8px;
+            user-select: none;
+            cursor: pointer; 
+        }
+        ul li.checked{
+            text-decoration: line-through;
+        }
+        ul li span{
+            position: absolute;
+            right: 35%;
+            width:40px;
+            height:40px;
+            font-size: 22px;
+            color: #000000;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 10px;
+        } 
+        ul li span:hover{
+            background-color: rgb(95, 95, 98);
+            border-radius: 10px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="todo-app">
+            <h1>To-Do List</h1>
+            <div class="row">
+                <input type="text" id="data" placeholder="Enter The Text" >
+                <button id="btn" onclick="action()">Add-Task</button>
+            </div>
+            <div style="display: flex;">
+                <ul id="list-container">
+                </ul>
+            </div>
+        </div>
+        <div id="bt">
+        </div>
+    </div>
+
+    <script>
+        const inputbox = document.getElementById("data");
+        const listContainer = document.getElementById("list-container");
+        function action(){
+            if(inputbox.value === ''){
+                alert("Please Enter your Task")
+            }
+            else{
+                let li = document.createElement("li");
+                li.innerHTML = inputbox.value;
+                listContainer.appendChild(li);
+                let span = document.createElement('span');
+                span.innerHTML="\u00d7";
+                li.appendChild(span)
+            }
+            inputbox.value='';
+            savedata();
+        }
+        listContainer.addEventListener("click", 
+        function(){
+            var e= listContainer;
+            if(event.target.tagName === "LI") {
+                event.target.classList.toggle("checked");
+                savedata();
+            } 
+            else if(event.target.tagName === "SPAN"){
+                event.target.parentElement.remove();
+                savedata();
+            }   
+            
+        },false);
+        function savedata(){
+            localStorage.setItem("all-data", listContainer.innerHTML);
+        }
+        function showtask(){
+            listContainer.innerHTML=localStorage.getItem("all-data");
+        }
+        showtask();
+    </script>
+</body>
+</html>
